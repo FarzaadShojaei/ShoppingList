@@ -1,12 +1,12 @@
 package ir.sample.myshoppinglistapp
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,35 +27,47 @@ data class ShoppingItem(val id:Int, var name: String, var quantity:Int, var isEd
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShoppingListApp(){
-    var sItems by remember { mutableStateOf(listOf<ShoppingItem>()) }
-    var showDialog by remember { mutableStateOf(false) }
-    Column (
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
 
-    ){
-        Button(
-            onClick = {showDialog=true},
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+        var sItems by remember { mutableStateOf(listOf<ShoppingItem>()) }
+        var showDialog by remember { mutableStateOf(false) }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Text("Add Item")
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                Button(
+                    onClick = { showDialog = true }
+                ) {
+                    Text("Add Item")
+                }
+            }
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
+                    .padding(top = 16.dp)
+            ) {
+                items(sItems) { item ->
+                    Text(item.name)  // Replace with actual item content if needed
+                }
+            }
         }
-        LazyColumn (
-            modifier = Modifier.fillMaxSize().padding(16.dp)
 
-        ){
-            items(sItems){
-
+        if (showDialog) {
+            BasicAlertDialog(onDismissRequest = { showDialog = false }) {
+                Text("I'm an alert dialog")
             }
         }
     }
 
-    if(showDialog){
 
-        BasicAlertDialog(onDismissRequest = {showDialog=false}) {
-            Text("I'm an alert dialog")
-        }
-    }
-}
 
 
