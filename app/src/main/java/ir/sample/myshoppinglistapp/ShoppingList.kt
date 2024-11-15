@@ -68,11 +68,30 @@ fun ShoppingListApp(){
         }
 
         if (showDialog) {
-            AlertDialog(onDismissRequest = { /*TODO*/ },
+            AlertDialog(onDismissRequest = { showDialog =false },
                 confirmButton = {
                     Row(modifier=Modifier.fillMaxWidth().padding(8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween){
+                        Button(onClick ={
+                        if(itemName.isNotBlank()){
+                            val newItem=ShoppingItem(
+                                id= sItems.size+1,
+                                name= itemName,
+                                quantity = itemQuantity.toInt()
+                            )
+                            sItems = sItems + newItem
+                            showDialog=false
+                            itemName = ""
+                        }
 
+                        } ) {
+                            Text("Add")
+
+                        }
+                Button(onClick = {showDialog=false}) {
+                    Text("Cancel");
+
+                }
                     }
 
 
